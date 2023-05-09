@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.unogame;
+
+package com.mycompany.uno;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -16,213 +17,253 @@ import javax.swing.JOptionPane;
  * @author laila
  */
 public class Game {
-     private int currPlayer;
-    private String[] playerID;
-    private Deck deck;
-    private ArrayList<ArrayList<unoCards>> playersHand;
-    private ArrayList<unoCards> pile;
-    private unoCards.cardColor validcolor;
-    private unoCards.cardValue validvalue;
-    boolean direction;
+    private int currentPlayer;
+    private String[] playerIds;
     
-    public Game(String[] IDs){
-    deck= new Deck();
-    deck.shuffledeck();
-    pile = new ArrayList<unoCards>();
-    playerID= IDs;
-    currPlayer= 0;
-    direction = false;
-    playersHand = new ArrayList<ArrayList<unoCards>>();
+    private UnoDeck deck;
+    private ArrayList<ArrayList<UnoCard>> playerHand;
+    private ArrayList<UnoCard> stockPile;
     
-    for(int i=0; i < IDs.length; i++){
-    ArrayList<unoCards> hand = new ArrayList<unoCards>(Arrays.asList(deck.drawCards(7)));
-    playersHand.add(hand);
+    private UnoCard.Color validColor;
+    private UnoCard.Value validValue;
+    
+    boolean gameDirection;
+    
+    public Game(String[] pids){
+    deck= new UnoDeck();
+    deck.shuffle();
+    stockPile = new ArrayList<UnoCard>();
+    
+    playerIds= pids;
+    currentPlayer= 0;
+    gameDirection = false;
+    
+    playerHand = new ArrayList<ArrayList<UnoCard>>();
+    
+    for(int i=0; i < pids.length; i++){
+    ArrayList<UnoCard> hand = new ArrayList<UnoCard>(Arrays.asList(deck.drawCard(7)));
+    playerHand.add(hand);
     }
     }
+    
     public void start(Game game){
-    unoCards card = deck.drawCard();
-    validcolor = card.getcardColor();
-    validvalue= card.getcardValue();
+    UnoCard card = deck.drawCard();
+    validColor = card.getColor();
+    validValue= card.getValue();
     
-    if(card.getcardValue()==unoCards.cardValue.wild){
-    start(game);}
+    if(card.getValue()==UnoCard.Value.Wild){
+    start(game);
+    }
     
-    if(card.getcardValue() == unoCards.cardValue.wildDrawFour || card.getcardValue() == unoCards.cardValue.drawTwo){
-    start(game);}
+    if(card.getValue() == UnoCard.Value.Wild_Four || card.getValue() == UnoCard.Value.DrawTwo){
+    start(game);
+    }
     
-    if(card.getcardValue()==unoCards.cardValue.skip){
-    JLabel message = new JLabel(playerID[currPlayer]+" was skipped.");
-    message.setFont(new Font("Arial",Font.BOLD,48));
+    if(card.getValue()== UnoCard.Value.Skip){
+    JLabel message = new JLabel(playerIds[currentPlayer]+" was skipped.");
+    message.setFont(new Font("Poppins",Font.BOLD,30));
     JOptionPane.showMessageDialog(null, message);
-    if(direction == false){
-    currPlayer = (currPlayer+1)%playerID.length;}
-    else if(direction==true){
-        currPlayer = (currPlayer-1)%playerID.length;
-    if(currPlayer==-1){
-       currPlayer=playerID.length-1; 
+    
+    if(gameDirection == false){
+    currentPlayer = (currentPlayer + 1) % playerIds.length;
+    }
+    else if(gameDirection == true){
+        currentPlayer = (currentPlayer - 1) % playerIds.length;
+    if(currentPlayer==-1){
+       currentPlayer=playerIds.length-1; 
+    }
     }
     }
     
-    }
-    if(card.getcardValue() == unoCards.cardValue.reverse){
-    JLabel message = new JLabel("The game direction has changed.");
-    message.setFont(new Font("Arial",Font.BOLD,48));
+    if(card.getValue() == UnoCard.Value.Reverse){
+    JLabel message = new JLabel(playerIds[currentPlayer] + " the game direction was changed.");
+    message.setFont(new Font("Poppins",Font.BOLD,30));
     JOptionPane.showMessageDialog(null, message);
-    direction ^= true;
-    currPlayer = playerID.length -1;}
-    pile.add(card);
+    gameDirection ^= true;
+    currentPlayer = playerIds.length - 1;
     }
-    public unoCards getTopcard(){
-    return new unoCards(validcolor,validvalue);}
-    
-    public ImageIcon getTopcardImage(){
-    return new ImageIcon(validcolor+ "_"+validvalue+ ".png");}
-    
-    public boolean gameover(){
-    for(String player: this.playerID){
-    if(hasEmptyHand(player)){
-    return true;}
+    stockPile.add(card);
     }
-    return false;}
+    
+    public UnoCard getTopCard(){
+    return new UnoCard(validColor,validValue);
+    }
+    
+    public ImageIcon getTopCardImage(){
+    return new ImageIcon(validColor + "_" + validValue + ".png");
+    }
+    
+    public boolean isGameOver(){
+    for(String player: this.playerIds){
+        if(hasEmptyHand(player)){
+    return true;
+    }
+    }
+    return false;
+    }
   
 
-    public String getcurrentPlayer(){
-    return this.playerID[this.currPlayer];}
-    public String getpreviuosPlayer(int i){
-    int index = this.currPlayer - i;
-    if(index==-1){
-    index=playerID.length-1;}
-    return this.playerID[index];}
+    public String getCurrentPlayer(){
+    return this.playerIds[this.currentPlayer];
+    }
     
-    public String[] getplayers(){
-    return playerID;}
+    public String getPreviousPlayer(int i){
+    int index = this.currentPlayer - i;
+    if(index == -1){
+    index=playerIds.length-1;
+    }
+    return this.playerIds[index];
+    }
     
-    public ArrayList<unoCards> getplayerhand(String id){
-    int index = Arrays.asList(playerID).indexOf(id);
-    return playersHand.get(index);}
+    public String[] getPlayers(){
+    return playerIds;
+    }
     
-    public int getplayerhandsize(String id){
-    return getplayerhand(id).size();}
+    public ArrayList<UnoCard> getPlayerHand(String pid){
+    int index = Arrays.asList(playerIds).indexOf(pid);
+    return playerHand.get(index);
+    }
     
-    public unoCards getPlayerCard(String id, int choice){
-    ArrayList<unoCards> hand = getplayerhand(id);
+    public int getPlayerHandSize(String pid){
+    return getPlayerHand(pid).size();
+    }
+    
+    public UnoCard getPlayerCard(String pid, int choice){
+    ArrayList<UnoCard> hand = getPlayerHand(pid);
     return hand.get(choice);
     }
+   
     
-    public boolean hasEmptyHand(String id){
-    return getplayerhand(id).isEmpty();}
-    
-    public boolean validcardplay(unoCards card){
-        return card.getcardColor()==validcolor || card.getcardValue()==validvalue;
+    public boolean hasEmptyHand(String pid){
+    return getPlayerHand(pid).isEmpty();
     }
-    public void checkturn(String id) throws InvalidPlayerTurnException{
-    if (this.playerID[this.currPlayer] != id){
-       throw new InvalidPlayerTurnException("It is not "+ id+ "'s turn.",id); 
+    
+    public boolean validCardPlay(UnoCard card){
+        return card.getColor()==validColor || card.getValue()==validValue;
+    }
+    
+    public void checkPlayerTurn(String pid) throws InvalidPlayerTurnException{
+    if (this.playerIds[this.currentPlayer] != pid){
+       throw new InvalidPlayerTurnException("It is not "+ pid + "'s turn.",pid); 
     }
 }
-    public void submitdraw(String id)throws InvalidPlayerTurnException{
-        checkturn(id);
-        if(deck.isempty()){
-        deck.replacedeck(pile);
-        deck.shuffledeck();}
-        getplayerhand(id).add(deck.drawCard());
-        if(direction == false){
-            currPlayer = (currPlayer + 1)% playerID.length;
+    public void submitDraw(String pid)throws InvalidPlayerTurnException{
+        checkPlayerTurn(pid);
+        
+        if(deck.isEmpty()){
+        deck.replaceDeckWith(stockPile);
+        deck.shuffle();
         }
-        else if (direction == true){
-        currPlayer = (currPlayer -1)%playerID.length;
-        if(currPlayer==-1){
-        currPlayer = playerID.length-1;}}
+        
+        getPlayerHand(pid).add(deck.drawCard());
+        if(gameDirection == false){
+            currentPlayer = (currentPlayer + 1)% playerIds.length;
+        }
+        
+        else if (gameDirection == true){
+        currentPlayer = (currentPlayer -1) % playerIds.length;
+        if(currentPlayer == -1){
+        currentPlayer = playerIds.length-1;
+        }
+        }
     }
-    public void setcardcolor(unoCards.cardColor color){
-        validcolor=color;
+        
+    public void setCardColor(UnoCard.Color color){
+        validColor=color;
     }
-    public void submitplayercard(String id, unoCards card, unoCards.cardColor declaredcolor)
-        throws InvalidPlayerTurnException, InvalidColorSubmissionException, InvalidValueSubmissionException{
-        checkturn(id);
-        ArrayList<unoCards> handp = getplayerhand(id);
-        if(validcardplay(card)){
-            if(card.getcardColor()==unoCards.cardColor.wild){
-                validcolor=card.getcardColor();
-                validvalue=card.getcardValue();
+    
+    public void submitPlayerCard(String pid, UnoCard card, UnoCard.Color declaredColor)
+        throws InvalidColorSubmissionException, InvalidValueSubmissionException, InvalidPlayerTurnException{
+        checkPlayerTurn(pid);
+        
+        ArrayList<UnoCard> pHand = getPlayerHand(pid);
+        
+        if(validCardPlay(card)){
+            if(card.getColor()==UnoCard.Color.Wild){
+                validColor=card.getColor();
+                validValue=card.getValue();
             }
-            if(card.getcardColor() != validcolor){
-              JLabel message = new JLabel("Invalid move, expected color: "+validcolor+" ,but got "+ card.getcardColor());
-              message.setFont(new Font("Arial", Font.BOLD,48));
+            if(card.getColor() != validColor){
+              JLabel message = new JLabel("Invalid move, expected color: "+validColor+" ,but got "+ card.getColor());
+              message.setFont(new Font("Poppins", Font.BOLD,30));
               JOptionPane.showMessageDialog(null,message);
-              throw new InvalidColorSubmissionException("Invalid move, expected color: "+validcolor+" ,but got "+ card.getcardColor(), card.getcardColor(), validcolor);
+              throw new InvalidColorSubmissionException(message, actual, expected);
             }
-            else if(card.getcardValue() != validvalue){
-               JLabel message2 = new JLabel("Invalid move, expected color: "+validvalue+" ,but got "+ card.getcardValue());
-               message2.setFont(new Font("Arial", Font.BOLD,48));
+            
+            else if(card.getValue() != validValue){
+               JLabel message2 = new JLabel("Invalid move, expected color: "+validValue+" ,but got "+ card.getValue());
+               message2.setFont(new Font("Poppins", Font.BOLD,48));
                  JOptionPane.showMessageDialog(null,message2);
-               throw new InvalidValueSubmissionException("Invalid move, expected color: "+validvalue+" ,but got "+ card.getcardValue(), card.getcardValue(), validvalue);
-            }}
-         handp.remove(card);
-         if(hasEmptyHand(this.playerID[currPlayer])){
-             JLabel message2 = new JLabel(this.playerID[currPlayer]+" won the game!");
-              message2.setFont(new Font("Arial", Font.BOLD,48));
+               throw new InvalidValueSubmissionException("Invalid move, expected color: "+validValue+" ,but got "+ card.getValue(), card.getValue(), validValue);
+            }
+        }
+         pHand.remove(card);
+         if(hasEmptyHand(this.playerIds[currentPlayer])){
+             JLabel message2 = new JLabel(this.playerIds[currentPlayer]+" won the game!");
+              message2.setFont(new Font("Poppins", Font.BOLD,48));
               JOptionPane.showMessageDialog(null,message2);
              System.exit(0);
          }
-         validcolor=card.getcardColor();
-         validvalue=card.getcardValue();
-         pile.add(card);
+         validColor=card.getColor();
+         validValue=card.getValue();
+         stockPile.add(card);
          
-         if(direction == false){
-             currPlayer=(currPlayer + 1)%playerID.length;}
-         else if (direction == true){
-              currPlayer=(currPlayer - 1)%playerID.length;
-                 if(currPlayer == -1){
-                     currPlayer = playerID.length -1;
+         if(gameDirection == false){
+             currentPlayer=(currentPlayer + 1)%playerIds.length;}
+         else if (gameDirection == true){
+              currentPlayer=(currentPlayer - 1)%playerIds.length;
+                 if(currentPlayer == -1){
+                     currentPlayer = playerIds.length -1;
                  }}
-         if(card.getcardColor()==unoCards.cardColor.wild){
-             validcolor = declaredcolor;
+         if(card.getColor()==UnoCard.Color.Wild){
+             validColor = declaredColor;
          }
-         if(card.getcardValue()==unoCards.cardValue.drawTwo){
-             id=playerID[currPlayer];
-             getplayerhand(id).add(deck.drawCard());
-             getplayerhand(id).add(deck.drawCard());
-             JLabel message = new JLabel(id+" drew 2 cards.");
+         if(card.getValue()==UnoCard.Value.DrawTwo){
+             pid =playerIds[currentPlayer];
+             getPlayerHand(pid).add(deck.drawCard());
+             getPlayerHand(pid).add(deck.drawCard());
+             JLabel message = new JLabel(pid + " drew 2 cards.");
          }
-          if(card.getcardValue()==unoCards.cardValue.wildDrawFour){
-             id=playerID[currPlayer];
-             getplayerhand(id).add(deck.drawCard());
-             getplayerhand(id).add(deck.drawCard());
-             getplayerhand(id).add(deck.drawCard());
-             getplayerhand(id).add(deck.drawCard());
-             JLabel message = new JLabel(id+" drew 4 cards.");
+         
+          if(card.getValue()==UnoCard.Value.Wild_Four){
+             pid=playerIds[currentPlayer];
+             getPlayerHand(pid).add(deck.drawCard());
+             getPlayerHand(pid).add(deck.drawCard());
+             getPlayerHand(pid).add(deck.drawCard());
+             getPlayerHand(pid).add(deck.drawCard());
+             JLabel message = new JLabel(pid +" drew 4 cards.");
          }
-           if(card.getcardValue()==unoCards.cardValue.skip){
-                JLabel message = new JLabel(playerID[currPlayer]+" was skipped.");
-                 message.setFont(new Font("Arial", Font.BOLD,48));
+           if(card.getValue()==UnoCard.Value.Skip){
+                JLabel message = new JLabel(playerIds[currentPlayer]+" was skipped.");
+                 message.setFont(new Font("Poppins", Font.BOLD,48));
               JOptionPane.showMessageDialog(null,message);
-                if(direction == false){
-             currPlayer=(currPlayer + 1)%playerID.length;}
-         else if (direction == true){
-              currPlayer=(currPlayer - 1)%playerID.length;
-                 if(currPlayer == -1){
-                     currPlayer = playerID.length -1; 
+                if(gameDirection == false){
+             currentPlayer=(currentPlayer + 1)%playerIds.length;}
+         else if (gameDirection == true){
+              currentPlayer=(currentPlayer - 1)%playerIds.length;
+                 if(currentPlayer == -1){
+                     currentPlayer = playerIds.length -1; 
                }
            }
          }
-           if(card.getcardValue()==unoCards.cardValue.reverse){
-              JLabel message = new JLabel(id+" changed the game direction.");
-                message.setFont(new Font("Arial", Font.BOLD,48));
+           if(card.getValue()==UnoCard.Value.Reverse){
+              JLabel message = new JLabel(pid +" changed the game direction.");
+                message.setFont(new Font("Poppins", Font.BOLD,48));
               JOptionPane.showMessageDialog(null,message);
-                direction ^= true;
-                if(direction==true){
-                    currPlayer = (currPlayer -2)%playerID.length;
-                    if(currPlayer==-1){
-                        currPlayer = playerID.length -1;
+              
+                gameDirection ^= true;
+                if(gameDirection==true){
+                    currentPlayer = (currentPlayer -2)%playerIds.length;
+                    if(currentPlayer==-1){
+                        currentPlayer = playerIds.length -1;
                     }
-                         if(currPlayer==-2){
-                        currPlayer = playerID.length -2;
+                         if(currentPlayer==-2){
+                        currentPlayer = playerIds.length -2;
                 }
            }
     
-                else if(direction == false){
-                    currPlayer=(currPlayer +2)%playerID.length;
+                else if(gameDirection == false){
+                    currentPlayer=(currentPlayer +2)%playerIds.length;
                 }
  
         
@@ -231,31 +272,31 @@ public class Game {
     } }
 class InvalidPlayerTurnException extends Exception{
  String playerId;
- public InvalidPlayerTurnException(String message, String id){
+ public InvalidPlayerTurnException(String message, String pid){
      super(message);
-     playerId = id;
+     playerId = pid;
  }
- public String getID(){
+ public String getPID(){
   return playerId;   
  }
 }
 class InvalidColorSubmissionException extends Exception{
-    private unoCards.cardColor expectedcolor;
-    private unoCards.cardColor actualcolor;
+    private UnoCard.Color expected;
+    private UnoCard.Color actual;
     
-    public InvalidColorSubmissionException(String message, unoCards.cardColor expectedcolor, unoCards.cardColor actualcolor){
-        this.actualcolor=actualcolor;
-        this.expectedcolor=expectedcolor;
+    public InvalidColorSubmissionException(String message, UnoCard.Color actual, UnoCard.Color expected){
+        this.actual= actual;
+        this.expected= expected;
     }
 }
 class InvalidValueSubmissionException extends Exception{
-    private unoCards.cardValue expectedvalue;
-    private unoCards.cardValue actualvalue;
+    private UnoCard.Value expected;
+    private UnoCard.Value actual;
     
-    public InvalidValueSubmissionException(String message, unoCards.cardValue expectedvalue, unoCards.cardValue actualvalue){
-        this.actualvalue=actualvalue;
-        this.expectedvalue=expectedvalue;
+    public InvalidValueSubmissionException(String message, UnoCard.Value actual, UnoCard.Value expected){
+        this.actual= actual;
+        this.expected= expected;
    
 }
 }
-
+    
