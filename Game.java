@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 package com.mycompany.uno;
 
@@ -178,7 +174,7 @@ public class Game {
         
         ArrayList<UnoCard> pHand = getPlayerHand(pid);
         
-        if(validCardPlay(card)){
+        if(!validCardPlay(card)){
             if(card.getColor()==UnoCard.Color.Wild){
                 validColor=card.getColor();
                 validValue=card.getValue();
@@ -200,7 +196,7 @@ public class Game {
          pHand.remove(card);
          if(hasEmptyHand(this.playerIds[currentPlayer])){
              JLabel message2 = new JLabel(this.playerIds[currentPlayer]+" won the game!");
-              message2.setFont(new Font("Poppins", Font.BOLD,48));
+              message2.setFont(new Font("Poppins", Font.BOLD,30));
               JOptionPane.showMessageDialog(null,message2);
              System.exit(0);
          }
@@ -298,5 +294,5 @@ class InvalidValueSubmissionException extends Exception{
         this.expected= expected;
    
 }
-}
+}    
     
