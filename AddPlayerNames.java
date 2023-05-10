@@ -8,7 +8,10 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author laila
+ *
+ * The AddPlayerNames class is used to get the names of players from the user.
  */
+
 public class AddPlayerNames extends javax.swing.JFrame
 {
         public ArrayList<String> playerIds;
@@ -16,7 +19,14 @@ public class AddPlayerNames extends javax.swing.JFrame
     public AddPlayerNames() {
         initComponents();
         playerIds = new ArrayList<>();
+        
     }
+    
+    /**
+     * Returns an array of the player names entered by the user.
+     * 
+     * @return An array of the player names
+     */
         
     
 public String[] getPids(){
@@ -44,6 +54,7 @@ public String[] getPids(){
         pidOneLabel = new javax.swing.JLabel();
         pidTwoLabel = new javax.swing.JLabel();
         pidThreeLabel = new javax.swing.JLabel();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,6 +90,14 @@ public String[] getPids(){
 
         pidThreeLabel.setFont(new java.awt.Font("Tamil MN", 0, 18)); // NOI18N
 
+        jToggleButton1.setFont(new java.awt.Font("Tamil MN", 1, 14)); // NOI18N
+        jToggleButton1.setText("back");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -106,6 +125,8 @@ public String[] getPids(){
                 .addGap(63, 63, 63)
                 .addComponent(saveButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(98, 98, 98)
                 .addComponent(doneButton)
                 .addGap(63, 63, 63))
         );
@@ -127,7 +148,8 @@ public String[] getPids(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23))
         );
 
@@ -150,9 +172,9 @@ public String[] getPids(){
         JLabel message = new JLabel("Please enter a name!");
         message.setFont(new Font("Poppins",Font.BOLD,28));
         JOptionPane.showMessageDialog(null,message);
-        } else { 
+       } else { 
        String name = pidTextBox.getText().trim();
-        playerIds.add(name);
+            playerIds.add(name);
         
         if(playerIds.size() == 1){
         pidOneLabel.setText(playerIds.get(0));
@@ -184,6 +206,7 @@ public String[] getPids(){
     }                                          
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+                                         
 
     if(playerIds.size() < 2) {
         JLabel message = new JLabel("you need at least two players to start the game");
@@ -194,9 +217,15 @@ public String[] getPids(){
     } else {
     this.dispose();
     new GameStage(playerIds).setVisible(true);
+
     }
 
     }                                          
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        new UnoMenu().setVisible(true);
+        this.dispose();
+    }                                              
 
     /**
      * @param args the command line arguments
@@ -238,6 +267,7 @@ public String[] getPids(){
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel pidOneLabel;
     private javax.swing.JTextField pidTextBox;
     private javax.swing.JLabel pidThreeLabel;
