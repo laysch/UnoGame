@@ -5,15 +5,20 @@
 package com.mycompany.uno;
 
 /**
- *
- * @author laila
- */
-public class Menu extends javax.swing.JFrame {
+
+The UnoMenu class represents the main menu GUI of the UNO game.
+It extends the javax.swing.JFrame class and is used to create a new window for the game.
+It contains various components such as buttons, text fields, and labels.
+The class includes a constructor, which initializes the components and creates the menu window.
+*/
+
+public class UnoMenu extends javax.swing.JFrame {
 
     /**
-     * Creates new form Menu
-     */
-    public Menu() {
+ * Creates a new instance of Menu.
+ * This constructor initializes the components and creates the menu window.
+ */
+    public UnoMenu() {
         initComponents();
     }
 
@@ -153,20 +158,21 @@ public class Menu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UnoMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UnoMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UnoMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UnoMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu().setVisible(true);
+                new UnoMenu().setVisible(true);
             }
         });
     }
@@ -179,4 +185,3 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration                   
 }
-
