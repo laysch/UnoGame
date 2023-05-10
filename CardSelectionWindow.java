@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author laila
  */
-public class PopUp extends javax.swing.JFrame {
+public class CardSelectionWindow extends javax.swing.JFrame {
 
     String cardImage = "";
     Game game;
@@ -25,15 +25,15 @@ public class PopUp extends javax.swing.JFrame {
     JButton topCardButton;
     UnoCard.Color declaredColor;
     
-    public PopUp(){}
+    public CardSelectionWindow(){}
     
-    public PopUp(String cardName, Game game, int index, ArrayList<JButton> cardButtons, GameStage gamestage, JButton topCardButton) {
+    public CardSelectionWindow(String cardName, Game game, int index, ArrayList<JButton> cardButtons, GameStage gamestage, JButton topCardButton) {
         initComponents();
         cardImage = cardName;
         this.game = game;
         playerHand = game.getPlayerHand(game.getCurrentPlayer());
         this.cardButtons = cardButtons;
-        cardLabel.setIcon(new javax.swing.ImageIcon(("/Users/laila/Desktop/images/small/" +cardImage + ".png")));
+        cardLabel.setIcon(new javax.swing.ImageIcon(("/com/mycompany/uno/imagesA/small/" + cardImage + ".png")));
         this.gameStage = gamestage;
         this.topCardButton = topCardButton;
     }
@@ -119,26 +119,19 @@ public class PopUp extends javax.swing.JFrame {
         if (declaredColor != null){
             try {
                 game.submitPlayerCard(game.getCurrentPlayer(), playerHand.get(choice),declaredColor);
-                Logger.getLogger(PopUp.class.getName()).log(Level.SEVERE,null,ex);
   
             }
-            catch (InvalidColorSubmissionException ex){
-                Logger.getLogger(PopUp.class.getName()).log(Level.SEVERE,null,ex);
+            catch (InvalidColorSubmissionException | InvalidValueSubmissionException | InvalidPlayerTurnException ex){
+                Logger.getLogger(CardSelectionWindow.class.getName()).log(Level.SEVERE,null,ex);
             }
-            catch (InvalidValueSubmissionException ex){
-                    Logger.getLogger(PopUp.class.getName()).log(Level.SEVERE,null,ex);
-           
-            }
-            catch (InvalidPlayerTurnException ex){
-                    Logger.getLogger(PopUp.class.getName()).log(Level.SEVERE,null,ex);
-            } this.revalidate();
+               this.revalidate();
             if(declaredColor != UnoCard.Color.Wild){
                 gameStage.setPidName(game.getCurrentPlayer());
                 gameStage.setButtonIcons();
-                topCardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Users/laila/Desktop/images/small/" + game.getTopCardImage())));
+                topCardButton.setIcon(new javax.swing.ImageIcon(("/Users/laila/Desktop/images/small/" + game.getTopCardImage())));
                 this.dispose();
             }
-}
+        }
     }                                             
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
@@ -175,7 +168,7 @@ public class PopUp extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PopUp().setVisible(true);
+                new CardSelectionWindow().setVisible(true);
             }
         });
     }
@@ -187,3 +180,4 @@ public class PopUp extends javax.swing.JFrame {
     private javax.swing.JButton useCardButton;
     // End of variables declaration                   
 }
+
