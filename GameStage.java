@@ -27,7 +27,7 @@ public class GameStage extends javax.swing.JFrame {
     Game game;
     ArrayList<JButton> cardButtons = new ArrayList<JButton>();
     ArrayList<String> cardIds;
-    PopUp window;
+    CardSelectionWindow window;
     
      public GameStage() {}
     
@@ -43,18 +43,15 @@ public class GameStage extends javax.swing.JFrame {
         setButtonIcons();
     }
    
-    public void setButtonIcons() {
+     public void setButtonIcons() {
         String listString = game.getPlayerHand(game.getCurrentPlayer()).stream().map(Object::toString).collect(Collectors.joining(","));
         String[] cardNames = listString.split(",");
         cardIds = new ArrayList<>(Arrays.asList(cardNames));      
         for (int i = 0; i < cardIds.size(); i++) {
             cardButtons.get(i).setIcon(new javax.swing.ImageIcon(("/Users/laila/Desktop/images/small/" + cardIds.get(i) + ".png")));
         }
-       
-        for (int i = cardIds.size(); i < cardButtons.size(); i++) {
-            cardButtons.get(i).setIcon(null);
-        }
-    } 
+
+    }
     
     public void populateArrayList(){
         cardButtons.add(jButton1);
@@ -213,7 +210,11 @@ public class GameStage extends javax.swing.JFrame {
             }
         });
 
-        topCardButton.setText("jButton3");
+        topCardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topCardButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -274,12 +275,13 @@ public class GameStage extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(downCard)
-                    .addComponent(topCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(pidNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pidNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(downCard)
+                        .addComponent(topCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -346,7 +348,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(9) != null){
             int index = 9;
             String cardId = cardIds.get(9);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -359,7 +361,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(7) != null){
             int index = 7;
             String cardId = cardIds.get(7);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -372,7 +374,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(8) != null){
             int index = 8;
             String cardId = cardIds.get(8);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -385,7 +387,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(0) != null){
             int index = 0;
             String cardId = cardIds.get(0);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -398,7 +400,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(10) != null){
             int index = 10;
             String cardId = cardIds.get(10);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -411,7 +413,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(11) != null){
             int index = 11;
             String cardId = cardIds.get(11);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -424,7 +426,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(5) != null){
             int index = 5;
             String cardId = cardIds.get(5);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -437,7 +439,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(6) != null){
             int index = 6;
             String cardId = cardIds.get(6);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -450,7 +452,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(12) != null){
             int index = 12;
             String cardId = cardIds.get(12);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -463,7 +465,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(1) != null){
             int index = 1;
             String cardId = cardIds.get(1);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -476,7 +478,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(2) != null){
             int index = 2;
             String cardId = cardIds.get(2);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -489,7 +491,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(4) != null){
             int index = 4;
             String cardId = cardIds.get(4);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -502,7 +504,7 @@ public class GameStage extends javax.swing.JFrame {
         if(cardIds.get(3) != null){
             int index = 3;
             String cardId = cardIds.get(3);
-            window = new PopUp(cardId, game, index, cardButtons, this, topCardButton);
+            window = new CardSelectionWindow(cardId, game, index, cardButtons, this, topCardButton);
             window.setBounds(750,40,700,800);
             window.setVisible(true);
             window.setResizable(false);
@@ -510,6 +512,10 @@ public class GameStage extends javax.swing.JFrame {
 
         }
     }                                        
+
+    private void topCardButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        // TODO add your handling code here:
+    }                                             
 
     /**
      * @param args the command line arguments
@@ -580,4 +586,5 @@ public class GameStage extends javax.swing.JFrame {
     private javax.swing.JButton topCardButton;
     // End of variables declaration                   
 }
+
 
