@@ -1,0 +1,68 @@
+/* commented out because haven't worked out the kinks yet
+
+package com.mycompany.uno
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class AiPlayer extends AddPlayerNames {
+    private ArrayList<UnoCard> hand;
+    private Random random;
+
+    public AiPlayer(ArrayList<UnoCard> hand) {
+        this.hand = hand;
+        this.random = new Random();
+    }
+
+    public UnoCard playCard(UnoCard.Color validColor, UnoCard.Value validValue) {
+        // check if there are any valid cards to play
+        ArrayList<UnoCard> validCards = getValidCards(validColor, validValue);
+        if (!validCards.isEmpty()) {
+            // play a random valid card
+            int index = random.nextInt(validCards.size());
+            return validCards.get(index);
+        } else {
+            // draw a card
+            return null;
+        }
+    }
+
+    private ArrayList<UnoCard> getValidCards(UnoCard.Color validColor, UnoCard.Value validValue) {
+        ArrayList<UnoCard> validCards = new ArrayList<>();
+        for (UnoCard card : hand) {
+            if (card.getColor() == validColor || card.getValue() == validValue) {
+                validCards.add(card);
+            }
+        }
+        return validCards;
+    }
+
+    @Override
+    public void takeTurn(Game game) {
+        UnoCard.Color validColor = game.getColor();
+        UnoCard.Value validValue = game.getValue();
+        UnoCard card = playCard(validColor, validValue);
+        if (card != null) {
+            hand.remove(card);
+            game.playCard(card);
+        } else {
+            game.drawCard(this);
+        }
+    }
+
+    @Override
+    public void receiveCard(UnoCard card) {
+        hand.add(card);
+    }
+
+    @Override
+    public int getHandSize() {
+        return hand.size();
+    }
+
+    @Override
+    public String getName() {
+        return "AI Player";
+    }
+}
+*/
